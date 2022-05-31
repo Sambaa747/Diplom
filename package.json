@@ -1,8 +1,8 @@
 {
-  "name": "blogging-app-using-mern",
+  "name": "crowdfunding-prototype",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://mehulk05.github.io/Blogapp-using-MERN",
+  "homepage": "",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
