@@ -101,12 +101,12 @@ export class CreatePost extends Component {
 
       case 'companyDescription':
         if (value.length > 0) {
-          errors.bio =
+          errors.companyName =
             value.length < 20 ? 'Content  must be 20 characters long!' : ''
         }
 
         if (value.length === 0) {
-          errors.bio = value.length === 0 ? 'Content is required!' : ''
+          errors.companyName = value.length === 0 ? 'Content is required!' : ''
         }
         break
       case 'imagePath':
@@ -205,7 +205,12 @@ export class CreatePost extends Component {
         })
     }
     this.setState({
-      Post: { ...this.state.Post, companyName: '', bio: '', imagePath: '' },
+      Post: {
+        ...this.state.Post,
+        companyName: '',
+        companyName: '',
+        imagePath: '',
+      },
     })
   }
   render() {
