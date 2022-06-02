@@ -2,7 +2,7 @@ import Axios from 'axios'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Spinner from '../../../Containers/Spinner/Spinner'
-import ShowPost from '../../Posts/ShowPost/ShowPost'
+import ShowCompaign from '../../Compaigns/ShowCompaign/ShowCompaign'
 import './Profile.css'
 export class Profile extends Component {
   constructor(props) {
@@ -10,7 +10,7 @@ export class Profile extends Component {
 
     this.state = {
       user: {},
-      posts: [],
+      compaigns: [],
       isloading: false,
       error: {
         message: '',
@@ -40,12 +40,12 @@ export class Profile extends Component {
             user: data.data.profile,
             isloading: false,
           })
-          return Axios.get('/profile/' + id + '/mypost')
+          return Axios.get('/profile/' + id + '/mycompaign')
         })
         .then((data) => {
           this.setState({
-            ...this.state.posts,
-            posts: data.data.post,
+            ...this.state.compaigns,
+            compaigns: data.data.compaign,
             isloading: false,
           })
         })
@@ -70,10 +70,10 @@ export class Profile extends Component {
             isloading: false,
           })
 
-          Axios.get('/profile/' + id + '/mypost').then((data) => {
+          Axios.get('/profile/' + id + '/mycompaign').then((data) => {
             this.setState({
-              ...this.state.posts,
-              posts: data.data.post,
+              ...this.state.compaigns,
+              compaigns: data.data.compaign,
               isloading: false,
             })
           })
@@ -122,10 +122,10 @@ export class Profile extends Component {
       )
     }
 
-    let fetchedposts
-    if (this.state.posts) {
-      fetchedposts = this.state.posts.map((post, index) => (
-        <ShowPost key={index} {...post} {...index} />
+    let fetchedcompaigns
+    if (this.state.compaigns) {
+      fetchedcompaigns = this.state.compaigns.map((compaign, index) => (
+        <ShowCompaign key={index} {...compaign} {...index} />
       ))
     }
     let profile = this.state.user
@@ -161,10 +161,10 @@ export class Profile extends Component {
             {profile.companyName}-ийн хөрөнгө босгосон түүхүүд
           </h2>
           <hr />
-          {this.state.posts.length === 0 ? (
+          {this.state.compaigns.length === 0 ? (
             <h2 className='mt-5 text-center'>Хөрөнгө босгож байгаагүй байна</h2>
           ) : null}
-          <div className='row'>{fetchedposts}</div>
+          <div className='row'>{fetchedcompaigns}</div>
         </div>
       </>
     )

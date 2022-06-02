@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import ImageUpload from '../../../Containers/ImageUpload/ImageUpload'
 import Spinner from '../../../Containers/Spinner/Spinner'
 
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import Dropdown from 'react-bootstrap/Dropdown'
 export class CreateCompaign extends Component {
   constructor(props) {
     super(props)
@@ -10,12 +12,12 @@ export class CreateCompaign extends Component {
     this.state = {
       Compaign: {
         id: '',
-        companyName: '',
-        contactNumber: '',
-        address: '',
-        registerNumber: '',
-        businessType: '',
-        companyDescription: '',
+        title: '',
+        planDetails: '',
+        fundingType: '',
+        pitchMaterial: '',
+        status: '',
+        videoPath: '',
         imagePath: '',
         created: '',
       },
@@ -27,12 +29,12 @@ export class CreateCompaign extends Component {
 
       haserror: false,
       errors: {
-        companyName: '',
-        contactNumber: '',
-        address: '',
-        registerNumber: '',
-        businessType: '',
-        companyDescription: '',
+        title: '',
+        planDetails: '',
+        fundingType: '',
+        pitchMaterial: '',
+        status: '',
+        videoPath: '',
         imagePath: '',
       },
     }
@@ -43,25 +45,26 @@ export class CreateCompaign extends Component {
   componentDidMount() {
     let path = this.props.match.path
     let id = this.props.match.params.id
-    if (path === '/profile/edit/:id') {
+    const storedData = JSON.parse(localStorage.getItem('profileData'))
+    if (!storedData && path == '/create') {
+      this.props.history.push('/createProfile')
+    }
+    if (path === '/edit/:id') {
       this.setState((pre) => ({
         isloading: true,
       }))
-      Axios.get('/profile/viewprofile')
+
+      Axios.get('/compaigns/' + id)
         .then((data) => {
-          let Compaign = data.data.profile
+          let compaign = data.data
           this.setState({
             isloading: false,
             Compaign: {
               ...this.state.Compaign,
-              id: Compaign._id,
-              companyName: Compaign.companyName,
-              contactNumber: Compaign.contactNumber,
-              address: Compaign.address,
-              registerNumber: Compaign.registerNumber,
-              businessType: Compaign.businessType,
-              companyDescription: Compaign.companyDescription,
-              imagePath: Compaign.imagePath,
+              id: compaign._id,
+              title: compaign.title,
+              pitchMaterial: compaign.pitchMaterial,
+              imagePath: compaign.imagePath,
             },
           })
         })
@@ -76,6 +79,7 @@ export class CreateCompaign extends Component {
           })
         })
     }
+    console.log(this.state)
   }
 
   imageHandler = (id, value, isValid) => {
@@ -91,26 +95,26 @@ export class CreateCompaign extends Component {
     let errors = this.state.errors
     const { name, value } = event.target
     switch (name) {
-      case 'companyName':
+      case 'title':
         if (value.length > 0) {
-          errors.companyName =
+          errors.title =
             value.length < 6 ? 'Title   must be 5 characters long!' : ''
         }
 
         if (value.length === 0) {
-          errors.companyName =
-            value.length === 0 ? 'companyName is required!' : ''
+          errors.title = value.length === 0 ? 'title is required!' : ''
         }
         break
 
-      case 'companyDescription':
+      case 'planDetails':
         if (value.length > 0) {
-          errors.companyName =
-            value.length < 20 ? 'Content  must be 20 characters long!' : ''
+          errors.planDetails =
+            value.length < 20 ? 'planDetails  must be 20 characters long!' : ''
         }
 
         if (value.length === 0) {
-          errors.companyName = value.length === 0 ? 'Content is required!' : ''
+          errors.planDetailst =
+            value.length === 0 ? 'planDetails is required!' : ''
         }
         break
       case 'imagePath':
@@ -134,46 +138,43 @@ export class CreateCompaign extends Component {
     }))
     let path = this.props.match.path
     let id = this.props.match.params.id
-
+    let date = new Date()
     e.preventDefault()
     let formData
     if (typeof this.state.Compaign.imagePath === 'object') {
       formData = new FormData()
       formData.append('id', this.state.Compaign.id)
-      formData.append('companyName', this.state.Compaign.companyName)
-      formData.append('contactNumber', this.state.Compaign.contactNumber)
-      formData.append('address', this.state.Compaign.address)
-      formData.append('registerNumber', this.state.Compaign.registerNumber)
-      formData.append('businessType', this.state.Compaign.businessType)
-      formData.append(
-        'companyDescription',
-        this.state.Compaign.companyDescription
-      )
+      formData.append('title', this.state.Compaign.title)
+      formData.append('planDetails', this.state.Compaign.planDetails)
+      formData.append('fundingType', this.state.Compaign.fundingType)
+      formData.append('pitchMaterial', this.state.Compaign.pitchMaterial)
+      formData.append('videoPath', this.state.Compaign.videoPath)
       formData.append(
         'image',
         this.state.Compaign.imagePath,
-        this.state.Compaign.companyName
+        this.state.Compaign.title
       )
+      formData.append('postDate', date.toString())
     } else {
       formData = {
         id: this.state.Compaign.id,
-        companyName: this.state.Compaign.companyName,
-        contactNumber: this.state.Compaign.contactNumber,
-        address: this.state.Compaign.address,
-        registerNumber: this.state.Compaign.registerNumber,
-        businessType: this.state.Compaign.businessType,
-        companyDescription: this.state.Compaign.companyDescription,
+        title: this.state.Compaign.title,
+        planDetails: this.state.Compaign.planDetails,
+        fundingType: this.state.Compaign.fundingType,
+        pitchMaterial: this.state.Compaign.pitchMaterial,
+        videoPath: this.state.Compaign.videoPath,
         image: this.state.Compaign.imagePath,
+        postDate: date.toString(),
       }
     }
 
-    if (path === '/profile/edit/:id') {
-      Axios.put('/profile/edit/' + id, formData)
+    if (path === '/edit/:id') {
+      Axios.put('/compaigns/' + id, formData)
         .then((data) => {
           this.setState((pre) => ({
             isloading: false,
           }))
-          this.props.history.push('/profile')
+          this.props.history.push('/')
         })
         .catch((e) => {
           this.setState({
@@ -186,18 +187,11 @@ export class CreateCompaign extends Component {
           })
         })
     } else {
-      Axios.post('/profile/create', formData)
+      Axios.post('/compaigns', formData)
         .then((data) => {
           this.setState((pre) => ({
-            isloading: true,
+            isloading: false,
           }))
-          let profile = data.data.profile.companyName
-          localStorage.setItem(
-            'profileData',
-            JSON.stringify({
-              companyName: profile,
-            })
-          )
           this.props.history.push('/')
         })
         .catch((e) => {
@@ -214,7 +208,12 @@ export class CreateCompaign extends Component {
     this.setState({
       Compaign: {
         ...this.state.Compaign,
-        companyName: '',
+        title: '',
+        planDetails: '',
+        fundingType: '',
+        pitchMaterial: '',
+        videoPath: '',
+
         imagePath: '',
       },
     })
@@ -234,7 +233,6 @@ export class CreateCompaign extends Component {
         </>
       )
     }
-
     if (this.state.error.code) {
       iserror = (
         <>
@@ -254,163 +252,125 @@ export class CreateCompaign extends Component {
         {iserror}
         <div className='container container-short'>
           <form onSubmit={this.mySubmitHandler} className='pt-4'>
-            <h3 className='text-center mb-3'>Компанийн тухай</h3>
+            <h3 className='text-center mb-3'>Хөрөнгө босголт эхлүүлэх</h3>
             <div className='form-group'>
-              <label htmlFor='companyName'>Компанийн нэр</label>
+              <label htmlFor='title'>Нэр </label>
               <input
-                type='companyName'
-                name='companyName'
-                value={this.state.Compaign.companyName}
+                type='title'
+                name='title'
+                value={this.state.Compaign.title}
                 className={
                   'form-control ' +
-                  (this.state.errors.companyName ? 'is-invalid' : '')
+                  (this.state.errors.title ? 'is-invalid' : '')
                 }
-                placeholder='Enter the companyName'
+                placeholder='Enter the title'
                 required
                 onChange={this.myChangeHandler}
               />
 
-              {this.state.errors.companyName.length > 0 && (
+              {this.state.errors.title.length > 0 && (
                 <div className='mt-1'>
                   <span className='error text-danger'>
-                    {this.state.errors.companyName}
+                    {this.state.errors.title}
                   </span>
                 </div>
               )}
             </div>
-            {/* --------------------------------------------------- */}
-
+            {/* ------------------------------------------------ */}
             <div className='form-group'>
-              <label htmlFor='password'>Холбогдох дугаар </label>
+              <label htmlFor='password'>Төлөвлөгөөний Дэлгэрэнгүй</label>
               <textarea
                 type='text'
-                name='contactNumber'
+                name='planDetails'
                 rows='4'
-                value={this.state.Compaign.contactNumber}
+                value={this.state.Compaign.planDetails}
                 className={
                   'form-control ' +
-                  (this.state.errors.ContactNumber ? 'is-invalid' : '')
+                  (this.state.errors.planDetails ? 'is-invalid' : '')
                 }
-                placeholder='Enter the  description'
+                placeholder=''
                 required='required'
                 onChange={this.myChangeHandler}
               />
 
-              {this.state.errors.contactNumber.length > 0 && (
+              {this.state.errors.planDetails.length > 0 && (
                 <div className='mt-1'>
                   <span className='error text-danger'>
-                    {this.state.errors.contactNumber}
+                    {this.state.errors.planDetails}
                   </span>
                 </div>
               )}
             </div>
-            {/* --------------------------------------------------- */}
+            {/* ------------------------------------------------ */}
 
+            <Dropdown onSelect={this.myChangeHandler}>
+              <Dropdown.Toggle variant='info' id='dropdown-basic'>
+                Сонгох
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item value='1' name='fundingType'>
+                  Option 1
+                </Dropdown.Item>
+                <Dropdown.Item value='2' name='fundingType'>
+                  Option 2
+                </Dropdown.Item>
+                <Dropdown.Item value='3' name='fundingType'>
+                  Option 3
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+            {/* ------------------------------------------------ */}
             <div className='form-group'>
-              <label htmlFor='password'>Хаяг </label>
+              <label htmlFor='password'>Танилцуулах материал</label>
               <textarea
                 type='text'
-                name='address'
+                name='pitchMaterial'
                 rows='4'
-                value={this.state.Compaign.address}
+                value={this.state.Compaign.pitchMaterial}
                 className={
                   'form-control ' +
-                  (this.state.errors.address ? 'is-invalid' : '')
+                  (this.state.errors.pitchMaterial ? 'is-invalid' : '')
                 }
-                placeholder='Enter the  description'
+                placeholder=''
                 required='required'
                 onChange={this.myChangeHandler}
               />
 
-              {this.state.errors.address.length > 0 && (
+              {this.state.errors.pitchMaterial.length > 0 && (
                 <div className='mt-1'>
                   <span className='error text-danger'>
-                    {this.state.errors.address}
+                    {this.state.errors.pitchMaterial}
                   </span>
                 </div>
               )}
             </div>
-            {/* --------------------------------------------------- */}
-
+            {/* ------------------------------------------------ */}
             <div className='form-group'>
-              <label htmlFor='password'>Регистерийн дугаар </label>
+              <label htmlFor='password'>Видео линк</label>
               <textarea
                 type='text'
-                name='registerNumber'
+                name='videoPath'
                 rows='4'
-                value={this.state.Compaign.registerNumber}
+                value={this.state.Compaign.videoPath}
                 className={
                   'form-control ' +
-                  (this.state.errors.registerNumber ? 'is-invalid' : '')
+                  (this.state.errors.videoPath ? 'is-invalid' : '')
                 }
-                placeholder='Enter the  description'
+                placeholder=''
                 required='required'
                 onChange={this.myChangeHandler}
               />
 
-              {this.state.errors.registerNumber.length > 0 && (
+              {this.state.errors.videoPath.length > 0 && (
                 <div className='mt-1'>
                   <span className='error text-danger'>
-                    {this.state.errors.registerNumber}
+                    {this.state.errors.videoPath}
                   </span>
                 </div>
               )}
             </div>
-            {/* --------------------------------------------------- */}
-
             <div className='form-group'>
-              <label htmlFor='password'>Үйл ажиллагаа явуулах чиглэл </label>
-              <textarea
-                type='text'
-                name='businessType'
-                rows='4'
-                value={this.state.Compaign.businessType}
-                className={
-                  'form-control ' +
-                  (this.state.errors.businessType ? 'is-invalid' : '')
-                }
-                placeholder='Enter the  description'
-                required='required'
-                onChange={this.myChangeHandler}
-              />
-
-              {this.state.errors.businessType.length > 0 && (
-                <div className='mt-1'>
-                  <span className='error text-danger'>
-                    {this.state.errors.businessType}
-                  </span>
-                </div>
-              )}
-            </div>
-            {/* --------------------------------------------------- */}
-
-            <div className='form-group'>
-              <label htmlFor='password'>Дэлгэрэнгүй тайлбар </label>
-              <textarea
-                type='text'
-                name='companyDescription'
-                rows='4'
-                value={this.state.Compaign.companyDescription}
-                className={
-                  'form-control ' +
-                  (this.state.errors.companyDescription ? 'is-invalid' : '')
-                }
-                placeholder='Enter the  description'
-                required='required'
-                onChange={this.myChangeHandler}
-              />
-
-              {this.state.errors.companyDescription.length > 0 && (
-                <div className='mt-1'>
-                  <span className='error text-danger'>
-                    {this.state.errors.companyDescription}
-                  </span>
-                </div>
-              )}
-            </div>
-
-            <div className='form-group'>
-              <label htmlFor='password'>Image </label>
+              <label htmlFor='password'>Зураг </label>
               <ImageUpload
                 id='imagePath'
                 name='imagePath'
@@ -432,18 +392,16 @@ export class CreateCompaign extends Component {
                 type='submit'
                 className='btn btn-primary'
                 disabled={
-                  this.state.Compaign.companyName &&
-                  this.state.Compaign.contactNumber &&
-                  this.state.Compaign.address &&
-                  this.state.Compaign.registerNumber &&
-                  this.state.Compaign.businessType &&
-                  this.state.Compaign.companyDescription &&
+                  this.state.Compaign.title &&
+                  this.state.Compaign.planDetails &&
+                  this.state.Compaign.pitchMaterial &&
+                  this.state.Compaign.videoPath &&
                   this.state.Compaign.imagePath
                     ? ''
                     : 'disabled'
                 }
               >
-                Шинэчлэх
+                Эхлүүлэх
               </button>
             </div>
           </form>

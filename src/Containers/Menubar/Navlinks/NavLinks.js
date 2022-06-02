@@ -26,7 +26,7 @@ const NavLinks = (props) => {
             <NavLink to='/company'>Байгууллага</NavLink>
           </li>
           <li>
-            <NavLink to='/mypost'>Компанит ажил</NavLink>
+            <NavLink to='/mycompaign'>Компанит ажил</NavLink>
           </li>
           <li>
             <NavLink to='/create'>Хөрөнгө босгох</NavLink>

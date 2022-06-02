@@ -3,7 +3,7 @@ const express = require('express')
 const multer = require('multer')
 const checkAuth = require('../middlewares/check-auth')
 const Profile = require('../models/profile')
-const Post = require('../models/post')
+const Compaign = require('../models/compaign')
 
 const MIME_TYPE_MAP = {
   'image/png': 'png',
@@ -163,20 +163,20 @@ router.get('/bycreator/:id', (req, res, next) => {
     }
   })
 })
-router.get('/:id/mypost', (req, res, next) => {
+router.get('/:id/mycompaign', (req, res, next) => {
   let user
   let creatorId
   Profile.findOne({ companyName: req.params.id })
     .then((prof) => {
       if (prof) {
         user = prof
-        return Post.find({ creator: user.creator })
+        return Compaign.find({ creator: user.creator })
       }
     })
-    .then((post) => {
+    .then((compaign) => {
       res.status(200).json({
         message: 'Post fetched successfully!',
-        post: post,
+        compaign: compaign,
       })
     })
     .catch((e) => {

@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import React, { Component } from 'react'
 import Spinner from '../../../Containers/Spinner/Spinner'
-import ShowPost from '../ShowPost/ShowPost'
+import ShowPost from '../ShowCompaign/ShowCompaign'
 
 export class Mypost extends Component {
   constructor(props) {

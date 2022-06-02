@@ -1,16 +1,16 @@
 import Axios from 'axios'
 import React, { Component } from 'react'
-import ShowPost from './ShowPost/ShowPost'
+import ShowCompaign from './ShowCompaign/ShowCompaign'
 import img1 from '../../assets/asset-1.png'
 import ShowUser from '../Users/ShowUsers/ShowUser'
 import Spinner from '../../Containers/Spinner/Spinner'
 
-export class Posts extends Component {
+export class Compaigns extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      posts: [],
+      compaigns: [],
       users: [],
       isloading: false,
     }
@@ -20,12 +20,15 @@ export class Posts extends Component {
     this.setState((pre) => ({
       isloading: true,
     }))
-    Promise.all([Axios.get('/posts'), Axios.get('/profile/profiles')])
+    Promise.all([Axios.get('/compaigns'), Axios.get('/profile/profiles')])
       .then((data) => {
         this.setState((pre) => ({
           isloading: false,
         }))
-        this.setState({ ...this.state.posts, posts: data[0].data.posts })
+        this.setState({
+          ...this.state.compaigns,
+          compaigns: data[0].data.compaigns,
+        })
         this.setState({ ...this.state.users, users: data[1].data.profile })
       })
       .catch((e) => {
@@ -40,11 +43,11 @@ export class Posts extends Component {
     if (this.state.isloading) {
       isLoading = <Spinner />
     }
-    let fetchedposts
+    let fetchedcompaigns
     let allUsers
-    if (this.state.posts) {
-      fetchedposts = this.state.posts.map((post, index) => (
-        <ShowPost key={index} {...post} {...index} />
+    if (this.state.compaigns) {
+      fetchedcompaigns = this.state.compaigns.map((compaign, index) => (
+        <ShowCompaign key={index} {...compaign} {...index} />
       ))
     }
     if (this.state.users) {
@@ -68,7 +71,7 @@ export class Posts extends Component {
         <div className='container hero py-5'>
           <div className='row'>
             <div className='col-md-8 col-xs-12'>
-              <div className='row'>{fetchedposts}</div>
+              <div className='row'>{fetchedcompaigns}</div>
             </div>
 
             <div className='col-md-4 col-xs-12 pl-4'>
@@ -85,4 +88,4 @@ export class Posts extends Component {
   }
 }
 
-export default Posts
+export default Compaigns

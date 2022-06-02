@@ -5,7 +5,7 @@ function footer() {
   return (
     <>
       <div className='aaa'>
-        <footer className=' fadeInUp col-md-12 '>
+        {/* <footer className=' fadeInUp col-md-12 '>
           <a
             href='https://medium.com/@mehulkothari05/medium-blogs-on-your-react-app-a3898a729aad'
             className='button btn-light medium'
@@ -20,7 +20,7 @@ function footer() {
               dwadwadawdad
             </span>
           </a>
-        </footer>
+        </footer> */}
         <h5 className='text-center copyright'>
           {' '}
           © 2022. Санхүү Эдийн Засгийн Их Сургууль. МСМТ, С.Самбалхүндэв

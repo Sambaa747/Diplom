@@ -5,12 +5,12 @@ import { Route, HashRouter as Router, Switch, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import Auth from './Components/Auth/Auth'
 import MainNavigation from './Containers/Menubar/MainNavigation/MainNavigation'
-import Posts from './Components/Posts/Posts'
-import SinglePost from './Components/Posts/SinglePost/SinglePost'
+import Compaigns from './Components/Compaigns/Compaigns'
+import SingleCompaign from './Components/Compaigns/SingleCompaign/SingleCompaign'
 import { AuthContext } from './context/auth-context'
-import CreatePost from './Components/Posts/CreatePost/CreatePost'
+import CreateCompaign from './Components/Compaigns/CreateCompaign/CreateCompaign'
 import Profile from './Components/Users/Profile/Profile'
-import Mypost from './Components/Posts/Mypost/Mypost'
+import MyCompaign from './Components/Compaigns/MyCompaign/MyCompaign'
 import CreateProfile from './Components/Users/CreateProfile/CreateProfile'
 
 import Spinner from './Containers/Spinner/Spinner'
@@ -93,7 +93,7 @@ const App = (props) => {
     route = (
       <>
         {token ? (
-          <Route path='/create' exact component={CreatePost}></Route>
+          <Route path='/create' exact component={CreateCompaign}></Route>
         ) : (
           <Redirect to='/auth' />
         )}
@@ -103,17 +103,21 @@ const App = (props) => {
           <Redirect to='/auth' />
         )}
         {token ? (
-          <Route path='/edit/:id' exact component={CreatePost}></Route>
+          <Route path='/edit/:id' exact component={CreateCompaign}></Route>
         ) : (
           <Redirect to='/auth' />
         )}
         {token ? (
-          <Route path='/mypost' exact component={Mypost}></Route>
+          <Route path='/mycompaign' exact component={MyCompaign}></Route>
         ) : (
           <Redirect to='/auth' />
         )}
         {token ? (
-          <Route path='/mypost/:id' exact component={SinglePost}></Route>
+          <Route
+            path='/mycompaign/:id'
+            exact
+            component={SingleCompaign}
+          ></Route>
         ) : (
           <Redirect to='/auth' />
         )}
@@ -145,10 +149,14 @@ const App = (props) => {
           <Router>
             <MainNavigation />
             <Switch>
-              <Route path='/post/:id' exact component={SinglePost}></Route>
+              <Route
+                path='/compaign/:id'
+                exact
+                component={SingleCompaign}
+              ></Route>
               <Route path='/public/:id' component={Profile} />
               <Route path='/auth' component={Auth} exact />
-              <Route path='/' component={Posts} exact />
+              <Route path='/' component={Compaigns} exact />
               {route}
             </Switch>
           </Router>

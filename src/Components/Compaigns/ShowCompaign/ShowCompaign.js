@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import ToText from '../../../utils/ToText'
-import './ShowPost.css'
+import './ShowCompaign.css'
 import avtar from '../../../assets/avtar.jpg'
 import Spinner from '../../../Containers/Spinner/Spinner'
-function ShowPost(props) {
-  const [post, setpost] = useState(props)
+
+function ShowCompaign(props) {
+  const [compaign, setCompaign] = useState(props)
   const [loading, setLoading] = useState(false)
   const [errmsg, setErrorMsg] = useState()
   const [errcode, setErrorCode] = useState()
@@ -19,7 +20,7 @@ function ShowPost(props) {
     Axios.get('/profile/bycreator/' + props.creator)
       .then((data) => {
         setLoading(false)
-        setpost({ ...props, user: data.data.profile })
+        setCompaign({ ...props, user: data.data.profile })
       })
       .catch((e) => {
         setLoading(false)
@@ -31,8 +32,8 @@ function ShowPost(props) {
       {errcode ? (
         <div className='container error container-short'>
           <div className='mar-20'>
-            <h5>Error Code - {errcode}</h5>
-            <h4>Error Message - {errmsg}</h4>
+            <h5>Алдааны код: {errcode}</h5>
+            <h4>Алдаа гарлаа - {errmsg}</h4>
           </div>
         </div>
       ) : null}
@@ -52,10 +53,10 @@ function ShowPost(props) {
           >
             <div className='show_auth_img'>
               <Link
-                to={'/public/' + post.user?.companyName}
+                to={'/public/' + compaign.user?.companyName}
                 style={{
                   backgroundImage: `url(${
-                    post.user?.imagePath ? post.user.imagePath : avtar
+                    compaign.user?.imagePath ? compaign.user.imagePath : avtar
                   })`,
                 }}
               >
@@ -65,22 +66,22 @@ function ShowPost(props) {
           </div>
           <div className='card-body'>
             <h5 className='card-title pt-3'>
-              {pathname === '/mypost' ? (
-                <Link to={'/mypost/' + props._id} className='title'>
+              {pathname === '/mycompaign' ? (
+                <Link to={'/mycompaign/' + props._id} className='title'>
                   {props.title}
                 </Link>
               ) : (
-                <Link to={'/post/' + props._id} className='title'>
+                <Link to={'/compaign/' + props._id} className='title'>
                   {props.title}
                 </Link>
               )}
             </h5>
 
             <p className='showblog_content'>
-              {`${ToText(props.content.substring(0, 80))}...`}
+              {`${ToText(props.title.substring(0, 80))}...`}
               <span>
                 {' '}
-                <b>Read More</b>
+                <b>Дэлгэрэнгүй</b>
               </span>
             </p>
           </div>
@@ -90,4 +91,4 @@ function ShowPost(props) {
   )
 }
 
-export default ShowPost
+export default ShowCompaign
