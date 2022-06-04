@@ -15,6 +15,7 @@ import CreateProfile from './Components/Users/CreateProfile/CreateProfile'
 
 import Spinner from './Containers/Spinner/Spinner'
 import Footer from './Containers/footer/footer'
+import Investor from './Components/Investor/Investor'
 
 let logoutTimer
 
@@ -157,6 +158,7 @@ const App = (props) => {
               <Route path='/public/:id' component={Profile} />
               <Route path='/auth' component={Auth} exact />
               <Route path='/' component={Compaigns} exact />
+              <Route path='/dwadaw' component={Investor} exact />
               {route}
             </Switch>
           </Router>

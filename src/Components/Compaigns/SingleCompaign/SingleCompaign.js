@@ -138,9 +138,15 @@ export class SingleCompaign extends Component {
             <p>{moment(compaign1.compaignDate).format('MMM DD, YYYY hh:mm')}</p>
           </div>
           <div className='singleCompaign_content pt-3'>
-            <img src={compaign1.imagePath} className='img-fluid' alt='prof' />
+            <img
+              src={compaign1.imagePath}
+              className='img-fluid'
+              width='500'
+              alt='prof'
+            />
             <div className='text pt-3'>
               <p>{compaign1.pitchMaterial}</p>
+              <p>zorison dun: {compaign1.targetPrice}</p>
               <p>{compaign1.planDetails}</p>
             </div>
           </div>
@@ -151,7 +157,7 @@ export class SingleCompaign extends Component {
       <>
         {isLoading}
         {iserror}
-        <div className='container py-4 SingleBlog '>
+        <div className=' py-4 SingleBlog '>
           <div className='row'>
             {this.props.match.path === '/mycompaign/:id' && (
               <div className='col-md-3 col-xs-12 '>
@@ -177,6 +183,7 @@ export class SingleCompaign extends Component {
                 <div className='modal-header'>
                   <h2>{compaign1.title}</h2>
                   <h2>{compaign1.pitchMaterial}</h2>
+                  <h2>dun: {compaign1.targetPrice}</h2>
                   <button
                     type='button'
                     className='close'

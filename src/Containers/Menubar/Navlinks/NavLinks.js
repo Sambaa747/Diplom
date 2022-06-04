@@ -40,7 +40,12 @@ const NavLinks = (props) => {
 
       {!auth.isLoggedIn && (
         <li>
-          <NavLink to='/auth'>Нэвтрэх</NavLink>
+          <NavLink to='/auth'>Компани</NavLink>
+        </li>
+      )}
+      {!auth.isLoggedIn && (
+        <li className='ddd'>
+          <NavLink to='/dwadaw'>Хувь хүн</NavLink>
         </li>
       )}
 

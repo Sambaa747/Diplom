@@ -16,6 +16,7 @@ export class CreateCompaign extends Component {
         planDetails: '',
         fundingType: '',
         pitchMaterial: '',
+        targetPrice: 0,
         status: '',
         videoPath: '',
         imagePath: '',
@@ -33,6 +34,7 @@ export class CreateCompaign extends Component {
         planDetails: '',
         fundingType: '',
         pitchMaterial: '',
+        targetPrice: 0,
         status: '',
         videoPath: '',
         imagePath: '',
@@ -64,6 +66,7 @@ export class CreateCompaign extends Component {
               id: compaign._id,
               title: compaign.title,
               pitchMaterial: compaign.pitchMaterial,
+              targetPrice: compaign.targetPrice,
               imagePath: compaign.imagePath,
             },
           })
@@ -148,6 +151,7 @@ export class CreateCompaign extends Component {
       formData.append('planDetails', this.state.Compaign.planDetails)
       formData.append('fundingType', this.state.Compaign.fundingType)
       formData.append('pitchMaterial', this.state.Compaign.pitchMaterial)
+      formData.append('targetPrice', this.state.Compaign.targetPrice)
       formData.append('videoPath', this.state.Compaign.videoPath)
       formData.append(
         'image',
@@ -162,6 +166,7 @@ export class CreateCompaign extends Component {
         planDetails: this.state.Compaign.planDetails,
         fundingType: this.state.Compaign.fundingType,
         pitchMaterial: this.state.Compaign.pitchMaterial,
+        targetPrice: this.state.Compaign.targetPrice,
         videoPath: this.state.Compaign.videoPath,
         image: this.state.Compaign.imagePath,
         postDate: date.toString(),
@@ -212,8 +217,8 @@ export class CreateCompaign extends Component {
         planDetails: '',
         fundingType: '',
         pitchMaterial: '',
+        targetPrice: 0,
         videoPath: '',
-
         imagePath: '',
       },
     })
@@ -346,6 +351,23 @@ export class CreateCompaign extends Component {
             </div>
             {/* ------------------------------------------------ */}
             <div className='form-group'>
+              <label htmlFor='password'>Зорьсон хөрөнгө оруулалтын дүн</label>
+              <textarea
+                type='number'
+                name='targetPrice'
+                rows='1'
+                value={this.state.Compaign.targetPrice}
+                className={
+                  'form-control ' +
+                  (this.state.errors.targetPrice ? 'is-invalid' : '')
+                }
+                placeholder=''
+                required='required'
+                onChange={this.myChangeHandler}
+              />
+            </div>
+            {/* ------------------------------------------------ */}
+            <div className='form-group'>
               <label htmlFor='password'>Видео линк</label>
               <textarea
                 type='text'
@@ -395,6 +417,7 @@ export class CreateCompaign extends Component {
                   this.state.Compaign.title &&
                   this.state.Compaign.planDetails &&
                   this.state.Compaign.pitchMaterial &&
+                  this.state.Compaign.targetPrice &&
                   this.state.Compaign.videoPath &&
                   this.state.Compaign.imagePath
                     ? ''

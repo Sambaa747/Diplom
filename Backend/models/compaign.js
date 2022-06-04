@@ -1,3 +1,4 @@
+const { Number } = require('mongoose')
 const mongoose = require('mongoose')
 
 const Compaign = mongoose.model('Compaign', {
@@ -17,6 +18,10 @@ const Compaign = mongoose.model('Compaign', {
   pitchMaterial: {
     type: String,
     required: true,
+  },
+  targetPrice: {
+    type: Number,
+    required: false,
   },
   status: {
     type: String,

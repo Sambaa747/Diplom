@@ -13,7 +13,9 @@
 .nav-links li {
   margin: 1rem;
 }
-
+.ddd {
+  font-weight: normal !important;
+}
 .nav-links a {
   border: 1px solid transparent;
   color: #292929;

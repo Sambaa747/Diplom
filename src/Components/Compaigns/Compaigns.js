@@ -1,10 +1,14 @@
 import Axios from 'axios'
 import React, { Component } from 'react'
 import ShowCompaign from './ShowCompaign/ShowCompaign'
-import img1 from '../../assets/asset-1.png'
+import img1 from '../../assets/1.png'
+import img2 from '../../assets/2.jpg'
 import ShowUser from '../Users/ShowUsers/ShowUser'
 import Spinner from '../../Containers/Spinner/Spinner'
-
+import ReactDOM from 'react-dom'
+import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
+import { Carousel } from 'react-responsive-carousel'
+import './Compaigns.css'
 export class Compaigns extends Component {
   constructor(props) {
     super(props)
@@ -56,8 +60,19 @@ export class Compaigns extends Component {
       ))
     }
     return (
-      <div>
-        <div className='container hero'>
+      <div className=''>
+        <div className='container'>
+          <Carousel showThumbs={false} showStatus={false} dynamicHeight={true}>
+            <div>
+              <img src={img1} />
+              <p className='legend'>бйцбйцб</p>
+            </div>
+            <div>
+              <img src={img2} />
+            </div>
+          </Carousel>
+        </div>
+        {/* <div className='container hero'>
           <div className='row align-items-center text-center text-md-left'>
             <div className='col-lg-4'>
               <h3 className='mb-3 display-4'>Краудфандингийн систем</h3>
@@ -67,7 +82,7 @@ export class Compaigns extends Component {
               <img src={img1} className='img-fluid' alt='img' />
             </div>
           </div>
-        </div>
+        </div> */}
         <div className='container hero py-5'>
           <div className='row'>
             <div className='col-md-8 col-xs-12'>
